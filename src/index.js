@@ -1,8 +1,13 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-import './index.css';
-import App from './App';
-import registerServiceWorker from './registerServiceWorker';
+import React,{Component} from 'react';
 
-ReactDOM.render(<App />, document.getElementById('root'));
-registerServiceWorker();
+export default class Index extends React.Component {
+	render () {
+		return (
+			<div>
+			fsdfdf
+			</div>
+		)
+	}
+}
+
+
