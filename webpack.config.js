@@ -32,7 +32,7 @@ module.exports = {
                 loader: "css-loader",
                 options: {
                 	modules: true, 
-                    localIdentName: '[name]__[local]--[hash:base64:5]' // 指定css的类名格式
+                  localIdentName: '[name]__[local]--[hash:base64:5]' // 指定css的类名格式
                 }
 
             },
@@ -46,15 +46,10 @@ module.exports = {
         exclude: /(node_modules)/,
         use: [
             {
-                loader: "style-loader"
+              loader: "style-loader"
             }, 
             {
-                loader: "css-loader",
-                options: {
-                	modules: true, 
-                    localIdentName: '[name]__[local]--[hash:base64:5]' // 指定css的类名格式
-                }
-
+            	loader: "css-loader"
             }
         ]
 	    },
