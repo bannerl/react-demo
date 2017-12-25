@@ -1,6 +1,6 @@
 import React,{ Component } from 'react';
 import propTypes from 'prop-types';
-import {Row,Col, Menu, Icon } from 'antd';
+import {Row,Col, Menu, Icon,Modal, Button,Input,Form} from 'antd';
 
 const SubMenu = Menu.SubMenu;
 const MenuItemGroup = Menu.ItemGroup;
@@ -10,12 +10,35 @@ class header extends React.Component {
 		super();
 		this.state = {
 		    current: 'shehui',
+		    visible: false
 	  	}
+	}
+	showModal () {
+	    this.setState({
+	      visible: true,
+	    });
+	}
+	handleOk (e) {
+	    console.log(e);
+	    this.setState({
+	      visible: false,
+	    });
+	}
+	handleCancel (e) {
+	    console.log(e);
+	    this.setState({
+	      visible: false,
+	    });
 	}
 	handleClick (e) {
 	    this.setState({
 	      current: e.key,
 	    });
+	    if(e.key==='register') {
+	    	this.showModal();
+	    	//fetch('http://localhost:8081/ai?id=1')
+			//.then(response => response.json()).then(json => {});
+	    }
 	  }
 	render () {
 		return (
@@ -43,11 +66,26 @@ class header extends React.Component {
 					        <Menu.Item key="yule">
 					          	<Icon type="appstore-o" />娱乐
 					        </Menu.Item>
+					        <Menu.Item key="register">
+					        	<Icon type="appstore-o" />注册
+					        </Menu.Item>
+					        <Menu.Item key="login">
+					        	<Icon type="appstore-o" />登录
+					        </Menu.Item>
 						</Menu>
 					</Col>
 					<Col span={2}></Col>
 				</Row>
-
+				<Modal
+		          title="Basic Modal"
+		          visible={this.state.visible}
+		          onOk={this.handleOk.bind(this)}
+		          onCancel={this.handleCancel.bind(this)}
+		        >
+		          <p>Some contents...</p>
+		          <p>Some contents...</p>
+		          <p>Some contents...</p>
+		        </Modal>
 			</div>
 		)
 	}

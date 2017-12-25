@@ -14,7 +14,7 @@ export default class Index extends React.Component {
 			<MediaQuery query='(max-device-width: 1224px)'>
 				<div>sddfsdf</div>
 			</MediaQuery>
-				fsdfdf
+				
 				<Footer />
 			</div>
 		)
