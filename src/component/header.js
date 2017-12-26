@@ -40,10 +40,10 @@ class Header extends React.Component {
 	handleLogin (e) {
 		this.setState({login:false});
 		const data = this.props.form.getFieldsValue();
-		const fetchMethod = {method:"POST"};
+		const fetchMethod = {method:"get"};
 		console.log(data);
 		fetch('http://localhost:8080/ai?username='+data.r_userName
-	    +'&password='+r_data.password,fetchMethod)
+	    +'&password='+data.r_password,fetchMethod)
 		.then(response => response).then(json => {
 			//console.log(json)
 		});
