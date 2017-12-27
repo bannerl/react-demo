@@ -21,15 +21,20 @@ export default class articleBlock extends React.Component {
 	
 	render () {
 		const { news } = this.state;
-		console.log(news)
+		const styles = {
+			overflow: "hidden",
+			whiteSpace: "nowrap",
+			textOverflow: "ellipsis",
+			width:this.props.width,
+			display: "block"
+		};
 		const newList = news.length
 		? news.map((item,i) => (
 			<li key={i}>
-				<Link to={`details/${item.uniquekey}`} target="_blank">{item.title}</Link>
+				<Link style={styles} to={`details/${item.uniquekey}`} target="_blank">{item.title}</Link>
 			</li>
 		))
-		: "获取数据失败";	
-		console.log(newList);
+		: "没有获取到新闻";	
 		return (
 			<div>
 				<Card>
