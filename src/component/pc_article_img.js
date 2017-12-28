@@ -62,7 +62,7 @@ export default class ArticleImg extends React.Component {
 		
 		return (
 			<div >
-				 <Card title={this.props.title} style={{width:this.props.containerWidth}} bordered={false}>
+				 <Card title={this.props.title} style={{width:this.props.containerWidth}} bordered={true}>
 				 	{imgList}
 				 </Card>
 			</div>

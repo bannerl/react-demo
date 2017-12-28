@@ -84,6 +84,7 @@ class Header extends React.Component {
 					<Col span={2}></Col>
 					<Col span={2}>
 						<img src="image/news.png" />
+						<span class={styles.title}>React-新闻</span>
 					</Col>
 					<Col span={18}>
 						<Menu 
@@ -92,40 +93,37 @@ class Header extends React.Component {
 							selectedKeys={[this.state.current]}
 						>
 							<Menu.Item key="top">
-					          	<Icon type="appstore-o" />头条
+					          	<Icon type="appstore" />头条
 					        </Menu.Item>
 							<Menu.Item key="shehui">
-					          	<Icon type="appstore-o" />社会
+					          	<Icon type="appstore" />社会
 					        </Menu.Item>
 					        <Menu.Item key="guonei">
-					          	<Icon type="appstore-o" />国内
+					          	<Icon type="appstore" />国内
 					        </Menu.Item>
 					        <Menu.Item key="guoji">
-					          	<Icon type="appstore-o" />国际
+					          	<Icon type="appstore" />国际
 					        </Menu.Item>
 					        <Menu.Item key="yule">
-					          	<Icon type="appstore-o" />娱乐
-					        </Menu.Item>
-					        <Menu.Item key="tiyu">
-					          	<Icon type="appstore-o" />体育
+					          	<Icon type="appstore" />娱乐
 					        </Menu.Item>
 					        <Menu.Item key="junshi">
-					          	<Icon type="appstore-o" />军事
+					          	<Icon type="appstore" />军事
 					        </Menu.Item>
 					        <Menu.Item key="keji">
-					          	<Icon type="appstore-o" />科技
+					          	<Icon type="appstore" />科技
 					        </Menu.Item>
 					        <Menu.Item key="jingji">
-					          	<Icon type="appstore-o" />财经
+					          	<Icon type="appstore" />财经
 					        </Menu.Item>
 					        <Menu.Item key="shishang">
-					          	<Icon type="appstore-o" />时尚
+					          	<Icon type="appstore" />时尚
 					        </Menu.Item>
 					        <Menu.Item key="register">
-					        	<Icon type="appstore-o" />注册
+					        	<Icon type="user" />注册
 					        </Menu.Item>
 					        <Menu.Item key="login">
-					        	<Icon type="appstore-o" />登录
+					        	<Icon type="login" style={{fontWeight:700}} />登录
 					        </Menu.Item>
 						</Menu>
 					</Col>
