@@ -34,7 +34,6 @@ module.exports = {
                 	modules: true, 
                   localIdentName: '[name]__[local]--[hash:base64:5]' // 指定css的类名格式
                 }
-
             },
             {
             	loader: "sass-loader"
@@ -43,13 +42,29 @@ module.exports = {
 			},
    		{
         test: /\.css$/,
-        exclude: /(node_modules)/,
+        exclude: /(node_modules)|(component_css)/,
         use: [
             {
               loader: "style-loader"
             }, 
             {
             	loader: "css-loader"
+            }
+        ]
+	    },
+	    {
+        test: /\.css$/,
+        include: /(component_css)/,
+        use: [
+            {
+              loader: "style-loader"
+            }, 
+            {
+            	loader: "css-loader",
+            	options: {
+	            	modules: true, 
+	              localIdentName: '[name]__[local]--[hash:base64:5]' // 指定css的类名格式
+	            }
             }
         ]
 	    },

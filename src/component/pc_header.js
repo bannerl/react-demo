@@ -1,6 +1,7 @@
 import React,{ Component } from 'react';
 import propTypes from 'prop-types';
 import {Row,Col, Menu, Icon,Modal, Button,Input,Form} from 'antd';
+import styles from '../component_css/pc_header.css';
 
 const SubMenu = Menu.SubMenu;
 const MenuItemGroup = Menu.ItemGroup;
@@ -78,29 +79,47 @@ class Header extends React.Component {
 	render () {
 		const { getFieldDecorator } = this.props.form;
 		return (
-			<div class="pc-header">
+			<div class={styles.header}>
 				<Row>
 					<Col span={2}></Col>
 					<Col span={2}>
 						<img src="image/news.png" />
 					</Col>
-					<Col span={14}>
+					<Col span={18}>
 						<Menu 
 							mode="horizontal"
 							onClick={this.handleClick.bind(this)}
 							selectedKeys={[this.state.current]}
 						>
+							<Menu.Item key="top">
+					          	<Icon type="appstore-o" />头条
+					        </Menu.Item>
 							<Menu.Item key="shehui">
 					          	<Icon type="appstore-o" />社会
 					        </Menu.Item>
-					        <Menu.Item key="jingji">
-					          	<Icon type="appstore-o" />经济
+					        <Menu.Item key="guonei">
+					          	<Icon type="appstore-o" />国内
+					        </Menu.Item>
+					        <Menu.Item key="guoji">
+					          	<Icon type="appstore-o" />国际
+					        </Menu.Item>
+					        <Menu.Item key="yule">
+					          	<Icon type="appstore-o" />娱乐
 					        </Menu.Item>
 					        <Menu.Item key="tiyu">
 					          	<Icon type="appstore-o" />体育
 					        </Menu.Item>
-					        <Menu.Item key="yule">
-					          	<Icon type="appstore-o" />娱乐
+					        <Menu.Item key="junshi">
+					          	<Icon type="appstore-o" />军事
+					        </Menu.Item>
+					        <Menu.Item key="keji">
+					          	<Icon type="appstore-o" />科技
+					        </Menu.Item>
+					        <Menu.Item key="jingji">
+					          	<Icon type="appstore-o" />财经
+					        </Menu.Item>
+					        <Menu.Item key="shishang">
+					          	<Icon type="appstore-o" />时尚
 					        </Menu.Item>
 					        <Menu.Item key="register">
 					        	<Icon type="appstore-o" />注册

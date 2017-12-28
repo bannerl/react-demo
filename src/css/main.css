@@ -1,38 +1,52 @@
-.pc-header img{width: 42px;margin-top: 4px;}
-#components-form-demo-normal-login .login-form {
-  max-width: 300px;
+@charset "utf-8";
+.pc_news_tabs{
+	width: 400px;
+	display: inline-block;
+	vertical-align: top;
 }
-#components-form-demo-normal-login .login-form-forgot {
-  float: right;
-}
-#components-form-demo-normal-login .login-form-button {
-  width: 100%;
-}
-.pc_news_tabs {
-	width: 340px;
-}
+
 .pc_news_tabs li{
 	list-style: none;
 }
 .pc_news_tabs ul{
 	padding:0;
 }
-.ant-col-20 .ant-carousel{
+.pc_canrousel{
+	display: inline-block;
+	vertical-align: top;
+	width: 400px;
+	height: 260px;
+	margin: 20px 10px;
+}
+.pc_canrousel img{
+	width: 400px;
+	height: 260px;
+}
+.pc_canrousel+.pc_news_tabs{
 	display: inline-block;
 	width: 400px;
-	margin-top: 14px;
-}
-.ant-col-20 .ant-carousel img{
-	width: 400px;
-}
-.ant-col-20 .ant-tabs{
-	display: inline-block;
-	margin-left: 14px;
+	vertical-align: top;
+	margin: 5px 10px;
 }
 .inline-block{
 	display: inline-block;
-}
-.ant-card-body{
 	vertical-align: top;
-	padding: 14px;
+}
+.an-col-20{
+	min-width: 1100px;
+}
+.ant-tabs.pc_news_tabs{
+	margin: 5px 10px;
+}
+.pc_news_tabs .ant-card-body {
+	padding-bottom: 8px;
+}
+.article-img .ant-card-body{
+	border: 1px solid #ddd;
+}
+.article-img .ant-card{
+	margin: 10px;
+}
+.container .pc_news_tabs .ant-card-bordered{
+	padding-bottom: 8px;
 }

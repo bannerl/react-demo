@@ -23,9 +23,11 @@ export default class ArticleImg extends React.Component {
 	
 	render () {
 		const { news } = this.state;
+		const width = (100/this.props.item)+'%';
+		
 		const item_img = {
 			display: "inline-block",
-			padding:'8px 10px',
+			width:width,
 			textAlign:"center",
 			boxSizing:'border-box'
 		};

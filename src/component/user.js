@@ -1,6 +1,6 @@
 import React,{ Component } from 'react';
-import Header from './header';
-import Footer from './footer';
+import Header from './pc_header';
+import Footer from './pc_footer';
 
 export default class User extends Component {
 	render () {
