@@ -6,6 +6,7 @@ import MediaQuery from 'react-responsive';
 import NewsContent from './pc_newscontent';
 
 import MobileHeader from './mobile_header';
+import MobileNewsContent from './mobile_news_content';
 
 export default class Index extends React.Component {
 	render () {
@@ -25,6 +26,7 @@ export default class Index extends React.Component {
 				</MediaQuery>
 				<MediaQuery query='(max-device-width: 1224px)'>
 					<MobileHeader />
+					<MobileNewsContent />
 				</MediaQuery>
 			</div>
 		)

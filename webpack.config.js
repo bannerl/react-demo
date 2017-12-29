@@ -24,6 +24,7 @@ module.exports = {
    		},
    		{
 			  test: /\.scss$/,
+			  exclude: /(node_modules)/,
 			  use: [
             {
               loader: "style-loader"
@@ -31,12 +32,15 @@ module.exports = {
             {
                 loader: "css-loader",
                 options: {
-                	modules: true, 
+                	modules: false, 
                   localIdentName: '[name]__[local]--[hash:base64:5]' // 指定css的类名格式
                 }
             },
             {
             	loader: "sass-loader"
+            },
+            {
+              loader: "postcss-loader"
             }
         ]
 			},
@@ -49,6 +53,9 @@ module.exports = {
             }, 
             {
             	loader: "css-loader"
+            },
+            {
+              loader: "postcss-loader"
             }
         ]
 	    },
@@ -65,6 +72,9 @@ module.exports = {
 	            	modules: true, 
 	              localIdentName: '[name]__[local]--[hash:base64:5]' // 指定css的类名格式
 	            }
+            },
+            {
+              loader: "postcss-loader"
             }
         ]
 	    },

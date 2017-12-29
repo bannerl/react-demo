@@ -11,10 +11,10 @@ export default class articleBlock extends React.Component {
 	}
 	
 	componentWillMount () {
-		const fetchMthod = {method:"GET"};
+		const fetchMethod = {method:"GET"};
 		
 		fetch('http://newsapi.gugujiankong.com/Handler.ashx?action=getnews&type='+this.props.type
-		+'&count='+this.props.count,fetchMthod)
+		+'&count='+this.props.count,fetchMethod)
 		.then(response => response.json() )
 		.then(json => this.setState({news:json}));
 	}

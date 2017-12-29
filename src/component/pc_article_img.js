@@ -49,7 +49,7 @@ export default class ArticleImg extends React.Component {
 		const imgList = news.length>0
 		? news.map( (item,i) => (
 			<div style={item_img} key={i}>
-				<Link to={`details/${item.uniquekey}`} target="_block">
+				<Link to={`details/${item.uniquekey}`} target="_self">
 					<img alt="item.title" src={item.thumbnail_pic_s} width={this.props.imgWidth}/>
 					<div class="custom-card">
 						<h3 style={styleH3}>{item.title}</h3>

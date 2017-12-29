@@ -2,9 +2,9 @@ import React,{ Component } from 'react';
 import propTypes from 'prop-types';
 import {Row,Col, Menu, Icon,Modal, Button,Input,Form} from 'antd';
 import styles from '../component_css/pc_header.css';
+//import {setStore} from '../../common/savaLocal';
 
 const SubMenu = Menu.SubMenu;
-const MenuItemGroup = Menu.ItemGroup;
 const FormItem = Form.Item;
 
 class Header extends React.Component {
@@ -14,8 +14,9 @@ class Header extends React.Component {
 		    current: 'shehui',
 		    visible: false,
 		    loading:false,
-		    login:false
-		    
+		    login:false,
+		    userNickName:'',
+		    UserId:''
 	  	}
 	}
 	showModal () {
@@ -23,30 +24,36 @@ class Header extends React.Component {
 	      visible: true,
 	    });
 	}
-	handleOk (e) {
+	handleRegister (e) {
 	    this.setState({ loading: true });
-	    const data = this.props.form.getFieldsValue();
+	    const formData = this.props.form.getFieldsValue();
 		const fetchMethod = {method:"GET"};
 	    e.preventDefault();
-	    
-	    fetch('http://localhost:8080/ai?username='+data.userName
-	    +'&password='+data.password+'&confirmpassword='+data.confirmPassword,fetchMethod)
-		.then(response => response).then(json => {
-			//console.log(json)
+	    console.log(formData);
+	    fetch("http://newsapi.gugujiankong.com/Handler.ashx?action=register" 
+	    + "&r_userName=" + formData.r_userName
+	    + "&r_password=" + formData.r_password 
+	    + "&r_confirmPassword=" + formData.r_confirmPassword, fetchMethod)
+	    .then(response => response.json()).then(json => {
+			this.setState({userNickName: json.NickUserName, userid: json.UserId});
+			
 		});
+	    
+	    
+	    
 	    setTimeout(() => {
 	      this.setState({ loading: false, visible: false });
 	    }, 200);
 	}
 	handleLogin (e) {
 		this.setState({login:false});
-		const data = this.props.form.getFieldsValue();
+		const formData = this.props.form.getFieldsValue();
 		const fetchMethod = {method:"get"};
-		console.log(data);
-		fetch('http://localhost:8080/ai?username='+data.r_userName
-	    +'&password='+data.r_password,fetchMethod)
-		.then(response => response).then(json => {
-			//console.log(json)
+		fetch("http://newsapi.gugujiankong.com/Handler.ashx?action=login&username=" 
+	    + formData.userName 
+	    +"&password=" + formData.password, fetchMethod)
+	    .then(response => response.json()).then(json => {
+			this.setState({userNickName: json.NickUserName, userid: json.UserId});
 		});
 	}
 	loginCancel (e) {
@@ -68,8 +75,7 @@ class Header extends React.Component {
 	    });
 	    if(e.key==='register') {
 	    	this.showModal();
-	    	//fetch('http://localhost:8081/ai?id=1')
-			//.then(response => response.json()).then(json => {});
+	    	
 	    }
 	    if(e.key === 'login') {
 	    	this.showLoginModal();
@@ -122,6 +128,7 @@ class Header extends React.Component {
 					        <Menu.Item key="register">
 					        	<Icon type="user" />注册
 					        </Menu.Item>
+					        
 					        <Menu.Item key="login">
 					        	<Icon type="login" style={{fontWeight:700}} />登录
 					        </Menu.Item>
@@ -132,45 +139,12 @@ class Header extends React.Component {
 				<Modal
 		          title="注册"
 		          visible={this.state.visible}
+		          onCancel={this.handleCancel.bind(this)}
 		          footer={[
-		            <Button key="submit" type="primary" loading={this.state.loading} onClick={this.handleOk.bind(this)}>
+		            <Button key="submit" type="primary" loading={this.state.loading} onClick={this.handleRegister.bind(this)}>
 		              确定
 		            </Button>,
 		            <Button key="back" onClick={this.handleCancel.bind(this)}>关闭</Button>,
-		          ]}
-		        >
-				 	<Form className="login-form">
-			          <FormItem>
-				          {getFieldDecorator('userName', {
-				            rules: [{ required: true, message: 'Please input your username!' }],
-				          })(
-				            <Input prefix={<Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }} />} placeholder="请输入用户名" />
-				          )}
-				      </FormItem>
-				      <FormItem>
-				          {getFieldDecorator('password', {
-				            rules: [{ required: true, message: 'Please input your Password!' }],
-				          })(
-				            <Input prefix={<Icon type="lock" style={{ color: 'rgba(0,0,0,.25)' }} />} type="password" placeholder="请输入密码" />
-				          )}
-				       </FormItem>
-				       <FormItem>
-				          {getFieldDecorator('confirmPassword', {
-				            rules: [{ required: true, message: 'Please input your Password!' }],
-				          })(
-				            <Input prefix={<Icon type="lock" style={{ color: 'rgba(0,0,0,.25)' }} />} type="password" placeholder="请输入确认密码" />
-				          )}
-				       </FormItem>
-				    </Form> 
-		        </Modal>
-		        <Modal
-		          title="登录"
-		          visible={this.state.login}
-		          footer={[
-		            <Button key="submit" type="primary" onClick={this.handleLogin.bind(this)}>
-		              登录
-		            </Button>,
-		            <Button key="back" onClick={this.loginCancel.bind(this)}>关闭</Button>,
 		          ]}
 		        >
 				 	<Form className="login-form">
@@ -184,6 +158,41 @@ class Header extends React.Component {
 				      <FormItem>
 				          {getFieldDecorator('r_password', {
 				            rules: [{ required: true, message: 'Please input your Password!' }],
+				          })(
+				            <Input prefix={<Icon type="lock" style={{ color: 'rgba(0,0,0,.25)' }} />} type="password" placeholder="请输入密码" />
+				          )}
+				       </FormItem>
+				       <FormItem>
+				          {getFieldDecorator('r_confirmPassword', {
+				            rules: [{ required: true, message: 'Please input your Password!' }],
+				          })(
+				            <Input prefix={<Icon type="lock" style={{ color: 'rgba(0,0,0,.25)' }} />} type="password" placeholder="请输入确认密码" />
+				          )}
+				       </FormItem>
+				    </Form> 
+		        </Modal>
+		        <Modal
+		          title="登录"
+		          visible={this.state.login}
+		          onCancel={this.loginCancel.bind(this)}
+		          footer={[
+		            <Button key="submit" type="primary" onClick={this.handleLogin.bind(this)}>
+		              登录
+		            </Button>,
+		            <Button key="back" onClick={this.loginCancel.bind(this)}>关闭</Button>,
+		          ]}
+		        >
+				 	<Form className="login-form">
+			          <FormItem>
+				          {getFieldDecorator('userName', {
+				            rules: [{ required: true, message: '请输入用户名' }],
+				          })(
+				            <Input prefix={<Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }} />} placeholder="请输入用户名" />
+				          )}
+				      </FormItem>
+				      <FormItem>
+				          {getFieldDecorator('password', {
+				            rules: [{ required: true, message: '请输入密码' }],
 				          })(
 				            <Input prefix={<Icon type="lock" style={{ color: 'rgba(0,0,0,.25)' }} />} type="password" placeholder="请输入密码" />
 				          )}
