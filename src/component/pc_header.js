@@ -1,89 +1,104 @@
 import React,{ Component } from 'react';
 import propTypes from 'prop-types';
-import {Row,Col, Menu, Icon,Modal, Button,Input,Form} from 'antd';
+import {Row,Col, Menu, message,Icon,Modal, Button,Input,Form,Tabs} from 'antd';
+import {Link} from 'react-router';
 import styles from '../component_css/pc_header.css';
-//import {setStore} from '../../common/savaLocal';
+import {setStore,getStore} from '../common/savaLocal';
 
 const SubMenu = Menu.SubMenu;
 const FormItem = Form.Item;
+const TabPane = Tabs.TabPane;
 
 class Header extends React.Component {
 	constructor (props) {
 		super(props);
 		this.state = {
-		    current: 'shehui',
+		    current: 'top',
 		    visible: false,
-		    loading:false,
-		    login:false,
+		    hasLogined:false,
+		    action:'register',
 		    userNickName:'',
-		    UserId:''
+		    UserInfo:''
 	  	}
 	}
-	showModal () {
-	    this.setState({
-	      visible: true,
-	    });
+	callback (key) {
+	  this.setState({'action':key});
 	}
-	handleRegister (e) {
-	    this.setState({ loading: true });
+	handleOk (e) {
 	    const formData = this.props.form.getFieldsValue();
 		const fetchMethod = {method:"GET"};
 	    e.preventDefault();
-	    console.log(formData);
-	    fetch("http://newsapi.gugujiankong.com/Handler.ashx?action=register" 
+	    
+	    fetch("http://newsapi.gugujiankong.com/Handler.ashx?action="
+	    +this.state.action
 	    + "&r_userName=" + formData.r_userName
 	    + "&r_password=" + formData.r_password 
+	    + "&userName=" + formData.userName
+	    + "&password=" + formData.password
 	    + "&r_confirmPassword=" + formData.r_confirmPassword, fetchMethod)
 	    .then(response => response.json()).then(json => {
-			this.setState({userNickName: json.NickUserName, userid: json.UserId});
-			
+	    	if(this.state.action === 'login'&&formData.password&&json.UserId){
+	    		let obj = {};
+				obj.userId = json.UserId;
+				obj.nickName = json.NickUserName;
+				setStore('UserInfo',obj);
+				this.setState({ UserInfo: json,hasLogined:true});
+	    	} else if(this.state.action === 'register') {
+	    		message.success("注册成功，请登录",1.5);
+	    	}
 		});
-	    
-	    
-	    
-	    setTimeout(() => {
-	      this.setState({ loading: false, visible: false });
-	    }, 200);
+		
+		this.setState({
+	      visible: false,
+	    });
 	}
-	handleLogin (e) {
-		this.setState({login:false});
-		const formData = this.props.form.getFieldsValue();
-		const fetchMethod = {method:"get"};
-		fetch("http://newsapi.gugujiankong.com/Handler.ashx?action=login&username=" 
-	    + formData.userName 
-	    +"&password=" + formData.password, fetchMethod)
-	    .then(response => response.json()).then(json => {
-			this.setState({userNickName: json.NickUserName, userid: json.UserId});
-		});
+	componentWillMount () {
+		const Info = getStore('UserInfo');
+		if(Info&&JSON.parse(Info).userId){
+			this.setState({hasLogined:true,UserInfo:JSON.parse(Info)});
+		}
 	}
-	loginCancel (e) {
-		this.setState({login:false})
+	loginout (e) {
+		this.setState({
+	      hasLogined: false,
+	    });
+	    setStore("UserInfo",'');
 	}
 	handleCancel (e) {
 	    this.setState({
 	      visible: false,
 	    });
 	}
-	showLoginModal (e) {
-		this.setState({
-	      login: true,
-	    });
-	}
 	handleClick (e) {
 	    this.setState({
 	      current: e.key,
 	    });
-	    if(e.key==='register') {
-	    	this.showModal();
-	    	
-	    }
-	    if(e.key === 'login') {
-	    	this.showLoginModal();
+	    if(e.key==='user') {
+	    	if(this.state.hasLogined){
+	    		
+	    	} else {
+	    		this.setState({
+			      visible: true,
+			    });
+	    	}
 	    }
 	}
 	
 	render () {
+		const {hasLogined,UserInfo} = this.state;
+		
+		const userState = hasLogined
+        ? <Menu.Item key="user">
+        	<Button style={{padding:"0 10px"}}>
+        	<Link to={`usercenter/${UserInfo.UserId}`}>个人中心</Link>
+        	</Button>
+        	<Button onClick={this.loginout.bind(this)} type="primary" style={{marginLeft:'10px',padding:"0 10px"}}>退出</Button>
+          </Menu.Item>
+		: <Menu.Item key="user">
+        	注册/登录
+          </Menu.Item>;
 		const { getFieldDecorator } = this.props.form;
+		
 		return (
 			<div class={styles.header}>
 				<Row>
@@ -125,79 +140,67 @@ class Header extends React.Component {
 					        <Menu.Item key="shishang">
 					          	<Icon type="appstore" />时尚
 					        </Menu.Item>
-					        <Menu.Item key="register">
-					        	<Icon type="user" />注册
-					        </Menu.Item>
-					        
-					        <Menu.Item key="login">
-					        	<Icon type="login" style={{fontWeight:700}} />登录
-					        </Menu.Item>
+					        {userState}
 						</Menu>
 					</Col>
 					<Col span={2}></Col>
 				</Row>
 				<Modal
-		          title="注册"
+		          title=""
 		          visible={this.state.visible}
 		          onCancel={this.handleCancel.bind(this)}
 		          footer={[
-		            <Button key="submit" type="primary" loading={this.state.loading} onClick={this.handleRegister.bind(this)}>
+		            <Button key="submit" type="primary" onClick={this.handleOk.bind(this)}>
 		              确定
 		            </Button>,
 		            <Button key="back" onClick={this.handleCancel.bind(this)}>关闭</Button>,
 		          ]}
 		        >
-				 	<Form className="login-form">
-			          <FormItem>
-				          {getFieldDecorator('r_userName', {
-				            rules: [{ required: true, message: 'Please input your username!' }],
-				          })(
-				            <Input prefix={<Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }} />} placeholder="请输入用户名" />
-				          )}
-				      </FormItem>
-				      <FormItem>
-				          {getFieldDecorator('r_password', {
-				            rules: [{ required: true, message: 'Please input your Password!' }],
-				          })(
-				            <Input prefix={<Icon type="lock" style={{ color: 'rgba(0,0,0,.25)' }} />} type="password" placeholder="请输入密码" />
-				          )}
-				       </FormItem>
-				       <FormItem>
-				          {getFieldDecorator('r_confirmPassword', {
-				            rules: [{ required: true, message: 'Please input your Password!' }],
-				          })(
-				            <Input prefix={<Icon type="lock" style={{ color: 'rgba(0,0,0,.25)' }} />} type="password" placeholder="请输入确认密码" />
-				          )}
-				       </FormItem>
-				    </Form> 
-		        </Modal>
-		        <Modal
-		          title="登录"
-		          visible={this.state.login}
-		          onCancel={this.loginCancel.bind(this)}
-		          footer={[
-		            <Button key="submit" type="primary" onClick={this.handleLogin.bind(this)}>
-		              登录
-		            </Button>,
-		            <Button key="back" onClick={this.loginCancel.bind(this)}>关闭</Button>,
-		          ]}
-		        >
-				 	<Form className="login-form">
-			          <FormItem>
-				          {getFieldDecorator('userName', {
-				            rules: [{ required: true, message: '请输入用户名' }],
-				          })(
-				            <Input prefix={<Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }} />} placeholder="请输入用户名" />
-				          )}
-				      </FormItem>
-				      <FormItem>
-				          {getFieldDecorator('password', {
-				            rules: [{ required: true, message: '请输入密码' }],
-				          })(
-				            <Input prefix={<Icon type="lock" style={{ color: 'rgba(0,0,0,.25)' }} />} type="password" placeholder="请输入密码" />
-				          )}
-				       </FormItem>
-				    </Form> 
+					<Tabs defaultActiveKey="register" onChange={this.callback.bind(this)}>
+						<TabPane tab="注册" key="register">
+							<Form className="login-form">
+					          <FormItem>
+						          {getFieldDecorator('r_userName', {
+						            rules: [{ required: true, message: '请输入你的用户名' }],
+						          })(
+						            <Input prefix={<Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }} />} placeholder="请输入用户名" />
+						          )}
+						      </FormItem>
+						      <FormItem>
+						          {getFieldDecorator('r_password', {
+						            rules: [{ required: true, message: '请输入你的密码' }],
+						          })(
+						            <Input prefix={<Icon type="lock" style={{ color: 'rgba(0,0,0,.25)' }} />} type="password" placeholder="请输入密码" />
+						          )}
+						       </FormItem>
+						       <FormItem>
+						          {getFieldDecorator('r_confirmPassword', {
+						            rules: [{ required: true, message: '请再次输入你的密码' }],
+						          })(
+						            <Input prefix={<Icon type="lock" style={{ color: 'rgba(0,0,0,.25)' }} />} type="password" placeholder="请输入确认密码" />
+						          )}
+						       </FormItem>
+						    </Form> 
+						</TabPane>
+						<TabPane tab="登录" key="login">
+							<Form className="login-form">
+					          <FormItem>
+						          {getFieldDecorator('userName', {
+						            rules: [{ required: true, message: '请输入用户名' }],
+						          })(
+						            <Input prefix={<Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }} />} placeholder="请输入用户名" />
+						          )}
+						      </FormItem>
+						      <FormItem>
+						          {getFieldDecorator('password', {
+						            rules: [{ required: true, message: '请输入密码' }],
+						          })(
+						            <Input prefix={<Icon type="lock" style={{ color: 'rgba(0,0,0,.25)' }} />} type="password" placeholder="请输入密码" />
+						          )}
+						       </FormItem>
+						    </Form> 
+						</TabPane>
+					</Tabs>
 		        </Modal>
 			</div>
 		)
