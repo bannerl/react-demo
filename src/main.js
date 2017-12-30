@@ -13,7 +13,7 @@ import NewsDetails from'./component/news_details';
 render (
 	<Router history={hashHistory}>
 		<Route path="/" component={Index}></Route>
-		<Route path="/usercenter" component={User}></Route>
+		<Route path="/usercenter/:userid" component={User}></Route>
 		<Route path="/details/:id" component={NewsDetails}></Route>
 	</Router>,
 	document.getElementById('root')

@@ -3,7 +3,7 @@ import propTypes from 'prop-types';
 import {Row,Col, Menu, message,Icon,Modal, Button,Input,Form,Tabs} from 'antd';
 import {Link} from 'react-router';
 import styles from '../component_css/pc_header.css';
-import {setStore,getStore} from '../common/savaLocal';
+import {setStore,getStore} from '../common/localStore';
 
 const SubMenu = Menu.SubMenu;
 const FormItem = Form.Item;
@@ -37,7 +37,7 @@ class Header extends React.Component {
 	    + "&password=" + formData.password
 	    + "&r_confirmPassword=" + formData.r_confirmPassword, fetchMethod)
 	    .then(response => response.json()).then(json => {
-	    	if(this.state.action === 'login'&&formData.password&&json.UserId){
+	    	if(this.state.action === 'login'&&formData.password&&json){
 	    		let obj = {};
 				obj.userId = json.UserId;
 				obj.nickName = json.NickUserName;
@@ -90,7 +90,7 @@ class Header extends React.Component {
 		const userState = hasLogined
         ? <Menu.Item key="user">
         	<Button style={{padding:"0 10px"}}>
-        	<Link to={`usercenter/${UserInfo.UserId}`}>个人中心</Link>
+        	<Link to={`usercenter/${UserInfo.userId}`}>个人中心</Link>
         	</Button>
         	<Button onClick={this.loginout.bind(this)} type="primary" style={{marginLeft:'10px',padding:"0 10px"}}>退出</Button>
           </Menu.Item>
