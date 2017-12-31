@@ -20,6 +20,20 @@
 	margin-left: 6px;
 	font-size: 18px;
 }
+.m_header .h_right{
+	color: #fff;
+}
+.m_header .h_left .anticon-arrow-left{
+	color:#fff;
+	font-size: 20px;
+	padding: 0 10px 0 2px;
+}
+.m_header .h_middle{
+ 	color:#fff;
+	font-size: 18px;
+	width: 100%;
+	text-align: center;
+}
 .login-form-button {
   width: 100%;
 }
@@ -37,4 +51,7 @@
 }
 .ant-carousel img{
 	width: 100%;
+}
+.user_box {
+	padding: 20px 40px;
 }

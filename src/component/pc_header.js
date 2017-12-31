@@ -1,7 +1,7 @@
 import React,{ Component } from 'react';
 import propTypes from 'prop-types';
 import {Row,Col, Menu, message,Icon,Modal, Button,Input,Form,Tabs} from 'antd';
-import {Link} from 'react-router';
+import {Link,browserHistory } from 'react-router';
 import styles from '../component_css/pc_header.css';
 import {setStore,getStore} from '../common/localStore';
 
@@ -21,6 +21,7 @@ class Header extends React.Component {
 		    UserInfo:''
 	  	}
 	}
+	
 	callback (key) {
 	  this.setState({'action':key});
 	}
@@ -42,8 +43,8 @@ class Header extends React.Component {
 				obj.userId = json.UserId;
 				obj.nickName = json.NickUserName;
 				setStore('UserInfo',obj);
-				this.setState({ UserInfo: json,hasLogined:true});
-	    	} else if(this.state.action === 'register') {
+				this.setState({ UserInfo: obj,hasLogined:true});
+	    	} else if(this.state.action === 'register'&&formData.r_password) {
 	    		message.success("注册成功，请登录",1.5);
 	    	}
 		});
@@ -63,6 +64,8 @@ class Header extends React.Component {
 	      hasLogined: false,
 	    });
 	    setStore("UserInfo",'');
+	    browserHistory.push("/");
+	    window.location.reload();
 	}
 	handleCancel (e) {
 	    this.setState({
@@ -83,10 +86,12 @@ class Header extends React.Component {
 	    	}
 	    }
 	}
+	componentDidMount () {
+		
+	}
 	
 	render () {
 		const {hasLogined,UserInfo} = this.state;
-		
 		const userState = hasLogined
         ? <Menu.Item key="user">
         	<Button style={{padding:"0 10px"}}>

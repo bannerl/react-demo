@@ -18,15 +18,20 @@ class Comment extends React.Component {
 		let userInfo = getStore('UserInfo');
 		
 		if(userInfo){
-			let userId = (JSON.parse(userInfo)).userId;
-			fetch("http://newsapi.gugujiankong.com/Handler.ashx?action=comment&userid=" 
-			+ userId + "&uniquekey=" + this.props.uniquekey 
-			+ "&commnet=" + formData.remark, fetchOptions)
-			.then(response => response.json())
-			.then(json => {
-				document.getElementsByClassName('textarea')[0].value = '';
-				this.componentDidMount();
-			});
+			if(formData.remark){
+				let userId = (JSON.parse(userInfo)).userId;
+				fetch("http://newsapi.gugujiankong.com/Handler.ashx?action=comment&userid=" 
+				+ userId + "&uniquekey=" + this.props.uniquekey 
+				+ "&commnet=" + formData.remark, fetchOptions)
+				.then(response => response.json())
+				.then(json => {
+					document.getElementsByClassName('textarea')[0].value = '';
+					this.componentDidMount();
+				});
+			} else {
+				 message.info('评论内容不能为空');
+			}
+			
 		} else {
 			 message.info('请先登录');
 		}
@@ -55,10 +60,16 @@ class Comment extends React.Component {
 		};
 		const {comments} = this.state;
 		const commentList = comments.length
-		?comments.map((comment,i) => 
-			<Card key={i} style={{marginTop:'20px'}} title={comment.UserName} extra={<a href="#">{comment.datetime}</a>}>
-				{comment.Comments}				
-			</Card>)
+		?comments.map((comment,i) => {
+			let diff = ((new Date()).getTime()) - ((new Date(comment.datetime)).getTime());
+			if(diff<1000*60*60*24*10){
+				return (
+					<Card key={i} style={{marginTop:'20px'}} title={comment.UserName} extra={<a href="#">{comment.datetime}</a>}>
+						{comment.Comments}				
+					</Card>	
+				)
+			}
+		})
 		:'还没有人评论，快抢沙发';
 		return (
 			<div>

@@ -1,11 +1,11 @@
 import React from 'react';
-
 import { Spin,message,Button,Alert,notification} from 'antd';
 import PCHeader from './pc_header';
 import PCFooter from './pc_footer';
 import '../css/news_details.scss';
 import Comment from './comment';
 import {getStore} from '../common/localStore';
+import MediaQuery from 'react-responsive';
 
 export default class Index extends React.Component {
 	constructor () {
@@ -52,7 +52,16 @@ export default class Index extends React.Component {
 		
 		return (
 			<div>
-				<PCHeader/>
+				<MediaQuery query='(min-device-width: 1224px)'>
+					<PCHeader/>
+				</MediaQuery>
+				<MediaQuery query='(max-device-width: 1224px)'>
+					<div class="m_header">
+					    <div class="h_middle">
+					      	文章详情
+					    </div>
+				    </div>
+				</MediaQuery>
 				<div class="article-wrapper" dangerouslySetInnerHTML={
 					{
 						__html:description
